@@ -1,0 +1,32 @@
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logout {
+  font:
+    16px Inter,
+    sans-serif;
+  color: #fff;
+  margin: 10px 10px 0 10px;
+  cursor: pointer;
+  background-color: rgb(34, 94, 147);
+  padding: 10px;
+  align-self: flex-end;
+}
+
+.logout:hover {
+  color: #d3d1d1;
+  transition: 1s;
+}
+
+h1 {
+  font:
+    60px Inter,
+    sans-serif;
+  text-align: center;
+  color: #fff;
+  margin: 0px;
+  text-shadow: 1px 1px 1px rgb(133 127 127);
+}

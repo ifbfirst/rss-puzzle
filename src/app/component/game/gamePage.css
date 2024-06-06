@@ -1,0 +1,265 @@
+.wrapper {
+  background-color: #fff;
+  max-width: 800px;
+  margin: 15px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font:
+    16px Inter,
+    sans-serif;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.settings-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 250px;
+}
+.select-wrapper {
+  margin: 20px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+select {
+  border: 2px solid #0f7aaa;
+  background-color: #f8f9fa;
+  color: #0f7aaa;
+  border-radius: 3px;
+  padding: 5px;
+  cursor: pointer;
+  height: 30px;
+}
+option {
+  cursor: pointer;
+  padding: 5px;
+}
+.result-screen {
+  box-shadow: 0px 0px 5px rgb(184, 185, 184);
+  background-color: rgb(233, 233, 233);
+  border-radius: 5px;
+  width: 606px;
+  height: 400px;
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+.result-sentence {
+  width: 606px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  margin: 0 auto;
+  height: 40px;
+}
+
+.result-sentence div,
+.sentence div {
+  font-size: 15px;
+  cursor: pointer;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #fdfcfc;
+}
+
+.result-sentence div {
+  border: 1px solid #fdfcfc;
+  box-shadow: 0px 0px 1px #686868;
+  padding: 5px;
+}
+.sentence div {
+  padding: 5px 15px;
+  margin: 5px;
+  border-radius: 3px;
+  box-shadow: 0px 0px 1px #686868;
+}
+
+.sentence {
+  background-color: #f1efef;
+  border-radius: 5px;
+  max-width: 750px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  height: 50px;
+}
+.sentence p {
+  margin: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 150%;
+  color: #0f7aaa;
+}
+.sentence div:active,
+.sentence div:hover,
+.result-sentence div:hover {
+  box-shadow: 0px 0px 4px rgb(104, 104, 104);
+  transition: 0.5s;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.btn-wrapper button {
+  margin: 30px auto;
+}
+
+.btn-statistic {
+  background-color: #b52d58;
+  cursor: pointer;
+}
+.btn-statistic:hover {
+  background-color: #981740;
+}
+
+.result-sentence .true-word {
+  box-shadow: inset 0px 5px 3px rgb(23, 177, 69);
+}
+.result-sentence .false-word {
+  box-shadow: inset 0px 5px 3px rgb(251, 68, 68);
+}
+
+.guessed,
+.showed {
+  pointer-events: none;
+}
+
+.selected {
+  opacity: 0.6;
+}
+
+.hints {
+  align-self: flex-end;
+  margin: 20px;
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.audio-hint,
+.translate-hint,
+.img-hint,
+.audio {
+  border: 1px solid #0f7aaa;
+  border-radius: 3px;
+  width: 30px;
+  height: 30px;
+  color: #0f7aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.hint-disabled{
+  border: 1px solid #848f95;
+  color: #848f95;
+
+}
+.audio {
+  border: none;
+  color: #848f95;
+  font-size: 24px;
+  margin-bottom: 10px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.audio:hover {
+  color: #0b6792;
+  transition: 1s;
+}
+
+.audio-hint:hover,
+.translate-hint:hover,
+.img-hint:hover {
+  color: #0f7aaa;
+  transition: 1s;
+}
+
+.translate {
+  height: 30px;
+  opacity: 1;
+  color: #848f95;
+}
+
+feComponentTransfer.hint-disabled {
+  color: #848f95;
+  border-color: #848f95;
+}
+
+.audio-animation {
+  animation: pulsing 1.2s infinite;
+  color: #0f7aaa;
+}
+
+@keyframes pulsing {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(0.8, 0.8);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.modal {
+  display: none;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  color: #0f7aaa;
+  text-transform: uppercase;
+  font:
+    24px Inter,
+    sans-serif;
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 500px;
+  max-width: 700px;
+  z-index: 15;
+}
+.modal-bg {
+  display: none;
+  content: '';
+  background: rgba(205, 214, 219, 0.7);
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.showedStat,
+.guessedStat {
+  font-size: 16px;
+  padding: 5px;
+  color: #686868;
+  text-transform: none;
+}
+.showedStat:before {
+  content: '-';
+  color: rgb(255, 0, 0);
+  font-size: 20px;
+  font-weight:bold;
+}
+.guessedStat:before {
+  content: '+';
+  font-size: 20px;
+  color: rgb(9, 162, 52);
+}

@@ -1,0 +1,53 @@
+h2 {
+  font:
+    40px Inter,
+    sans-serif;
+  text-align: center;
+  color: #fff;
+  margin-top: 20px;
+  text-shadow: 1px 1px 1px rgb(133 127 127);
+}
+
+h3 {
+  font:
+    18px Inter,
+    sans-serif;
+  font-weight: 400;
+  line-height: 150%;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #f9fafb;
+  text-align: center;
+  text-shadow: 1px 1px 1px rgb(133 127 127);
+}
+
+button {
+  display: block;
+  height: 40px;
+  padding: 10px;
+  width: 150px;
+  margin: 50px auto;
+  border-radius: 5px;
+  font:
+    16px Inter,
+    sans-serif;
+  text-transform: uppercase;
+  border: none;
+  background-color: #0f7aaa;
+  color: #fff;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #156388;
+  transition: 1s;
+}
+
+.btn-disabled {
+  pointer-events: none;
+  background-color: #a2d0e7;
+}
+
+.hidden {
+  display: none;
+}

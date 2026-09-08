@@ -1,67 +1,65 @@
-import { checkLevel } from '../utils/checkLevel';
-import { newLevel, newRound } from '../utils/newSelection';
+import { getCollection } from '../../../data/collections';
 
 export class Select {
   private tagResult: HTMLElement;
-  public level: number;
-  public round: number;
+  private onLevel: (level: number) => void;
+  private onRound: (round: number) => void;
+
+  constructor(
+    level: number,
+    round: number,
+    handlers: {
+      onLevel: (level: number) => void;
+      onRound: (round: number) => void;
+    },
+  ) {
+    this.tagResult = document.createElement('div');
+    this.tagResult.className = 'select-wrapper';
+    this.onLevel = handlers.onLevel;
+    this.onRound = handlers.onRound;
+    this.createSelectLevel(level);
+    this.createSelectRound(level, round);
+  }
 
   getResultTag(): HTMLElement {
     return this.tagResult;
   }
 
-  constructor(level: number, round: number) {
-    this.tagResult = document.createElement('div');
-    this.tagResult.className = 'select-wrapper';
-    this.level = level;
-    this.round = round;
-    this.createSelectLevel();
-    this.createSelectRound(level);
-  }
-
-  private createSelectLevel() {
-    const selectLevel = <HTMLSelectElement>document.createElement('select');
+  private createSelectLevel(currentLevel: number): void {
+    const selectLevel = document.createElement('select');
     selectLevel.className = 'levels';
-
+    selectLevel.setAttribute('aria-label', 'Level');
     this.tagResult.appendChild(selectLevel);
-    for (let i = 1; i < 7; i = i + 1) {
-      const level = document.createElement('option');
-      level.value = `${i}`;
-      level.textContent = `Level ${i}`;
-      selectLevel.appendChild(level);
+    for (let i = 1; i < 7; i += 1) {
+      const option = document.createElement('option');
+      option.value = `${i}`;
+      option.textContent = `Level ${i}`;
+      selectLevel.appendChild(option);
     }
-    if (localStorage.getItem('level') !== null) {
-      selectLevel.value = `${Number(localStorage.getItem('level'))}`;
-    } else {
-      selectLevel.value = `1`;
-    }
+    selectLevel.value = `${currentLevel}`;
     selectLevel.addEventListener('change', () => {
-      this.createSelectRound(Number(selectLevel.value));
-      newLevel(Number(selectLevel.value));
+      const level = Number(selectLevel.value);
+      this.createSelectRound(level, 1);
+      this.onLevel(level);
     });
   }
 
-  public createSelectRound(level: number) {
-    document.querySelector('.round')?.remove();
+  public createSelectRound(level: number, round: number): void {
+    this.tagResult.querySelector('.round')?.remove();
     const selectRound = document.createElement('select');
     selectRound.className = 'round';
-    const sources = checkLevel(level);
+    selectRound.setAttribute('aria-label', 'Round');
     this.tagResult.appendChild(selectRound);
-    if (sources) {
-      for (let i = 1; i < sources.rounds.length + 1; i = i + 1) {
-        const round = document.createElement('option');
-        round.value = `${i}`;
-        round.textContent = `Round ${i}`;
-        selectRound.appendChild(round);
-      }
-      if (localStorage.getItem('round') !== null) {
-        selectRound.value = `${Number(localStorage.getItem('round')) + 1}`;
-      } else {
-        selectRound.value = `1`;
-      }
+    const sources = getCollection(level);
+    for (let i = 1; i < sources.rounds.length + 1; i += 1) {
+      const option = document.createElement('option');
+      option.value = `${i}`;
+      option.textContent = `Round ${i}`;
+      selectRound.appendChild(option);
     }
+    selectRound.value = `${round}`;
     selectRound.addEventListener('change', () => {
-      newRound(Number(selectRound.value));
+      this.onRound(Number(selectRound.value) - 1);
     });
   }
 }

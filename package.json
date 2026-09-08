@@ -6,21 +6,16 @@
   "scripts": {
     "start": "webpack serve --open --config ./webpack.config.js --env mode=dev",
     "build": "webpack --config ./webpack.config.js --env mode=prod",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prettier-format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,json}' --config ./.prettierrc",
-    "lint": "eslint ./src",
+    "lint": "eslint ./src --ignore-pattern '**/*.test.ts'",
     "lint:fix": "eslint --fix ./src",
     "ci:format": "prettier . --check",
     "format": "prettier . --write",
     "prepare": "husky install"
   },
   "keywords": [],
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm test",
-      "pre-push": "npm test"
-    }
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -39,8 +34,10 @@
     "style-loader": "^3.3.4",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.2",
+    "vitest": "^5.0.0",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.2"
+    "webpack-dev-server": "^5.0.2",
+    "webpack-merge": "^6.0.1"
   }
 }

@@ -1,32 +1,44 @@
 header {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 8px 20px 0;
 }
 
 .logout {
-  font:
-    16px Inter,
-    sans-serif;
+  position: absolute;
+  top: 8px;
+  right: 20px;
+  font: 600 13px/1 var(--font);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: #fff;
-  margin: 10px 10px 0 10px;
   cursor: pointer;
   background-color: rgb(34, 94, 147);
-  padding: 10px;
-  align-self: flex-end;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .logout:hover {
-  color: #d3d1d1;
-  transition: 1s;
+  color: #eef3f6;
+  background-color: rgb(24, 78, 126);
+}
+
+.logout:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
 h1 {
-  font:
-    60px Inter,
-    sans-serif;
+  font: 700 clamp(28px, 4.6vh, 44px) / 1.1 var(--font);
   text-align: center;
   color: #fff;
-  margin: 0px;
-  text-shadow: 1px 1px 1px rgb(133 127 127);
+  margin: 0;
+  padding: 0 104px;
+  text-shadow: 0 1px 8px rgba(8, 20, 30, 0.35);
 }

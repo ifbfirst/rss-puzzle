@@ -13,12 +13,13 @@ const baseConfig = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'webpack Boilerplate',
+      title: 'Puzzle',
       template: path.resolve(__dirname, './src/index.html'),
       filename: 'index.html',
+      favicon: path.resolve(__dirname, './src/assets/favicon.svg'),
     }),
     new CleanWebpackPlugin(),
-    new EslingPlugin({ extensions: 'ts' })
+    new EslingPlugin({ extensions: 'ts', exclude: ['node_modules', '**/*.test.ts'] }),
   ],
   module: {
     rules: [

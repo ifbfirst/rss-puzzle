@@ -1,105 +1,67 @@
-import { checkResult } from '../utils/checkResult';
-import { showResult } from '../utils/showResult';
+import { PUZZLE_HEIGHT, PUZZLE_WIDTH, ROW_HEIGHT } from '../../../constants';
+import { getRound } from '../../../data/collections';
+import { pathToData } from '../../../data/path';
+import { layoutWords } from '../../../game/logic';
+import { gameStore } from '../../../state/store';
+import { WordLayout } from '../../../types/models';
+import { getGameSession } from '../sessionRef';
 
 export class Word {
   private tagResult: HTMLElement;
-  public sentence: string;
-  public roundNumber: number;
-  public sentenceNumber: number;
-  public roundImage: string;
-  public width: number;
-  public wordWidthSum: number;
+
+  constructor(layout: WordLayout, sentenceIndex: number, imageSrc: string) {
+    this.tagResult = document.createElement('div');
+    this.tagResult.textContent = layout.word;
+    this.tagResult.draggable = true;
+    this.tagResult.style.width = `${layout.width}px`;
+    this.tagResult.style.background = `url(${imageSrc}) no-repeat`;
+    this.tagResult.style.backgroundPosition = `${-layout.left}px -${sentenceIndex * ROW_HEIGHT}px`;
+    this.applyImageHint();
+    this.tagResult.addEventListener('click', () => this.onClick());
+  }
+
   getResultTag(): HTMLElement {
     return this.tagResult;
   }
 
-  constructor(
-    word: string,
-    sentence: string,
-    levelNumber: number,
-    roundNumber: number,
-    sentenceNumber: number,
-    wordWidthSum: number,
-    roundImage: string,
-  ) {
-    this.tagResult = document.createElement('div');
-    this.tagResult.textContent = word;
-    this.sentence = sentence;
-    this.roundNumber = roundNumber;
-    this.sentenceNumber = sentenceNumber;
-    this.width = (606 / sentence.replace(/\s+/g, '').length) * word.length;
-    this.tagResult.style.width = `${this.width}px`;
-    this.roundImage = roundImage;
-    this.tagResult.style.background = `url(${this.roundImage}) no-repeat`;
-
-    if (
-      localStorage.getItem('img-hint') === 'on' ||
-      (localStorage.getItem('img-hint') === 'off' &&
-        !document
-          .querySelector('.img-hint')
-          ?.classList.contains('hint-disabled')) ||
-      localStorage.getItem('img-hint') === null
-    ) {
+  private applyImageHint(): void {
+    const imageOn = gameStore.getState().hints.image;
+    if (imageOn) {
       this.tagResult.style.color = '#fff';
       this.tagResult.style.textShadow = '0px 0px 3px rgb(9, 9, 9)';
-      this.tagResult.style.backgroundSize = '606px 400px';
+      this.tagResult.style.backgroundSize = `${PUZZLE_WIDTH}px ${PUZZLE_HEIGHT}px`;
+      return;
     }
-    if (localStorage.getItem('img-hint') === 'off') {
-      this.tagResult.style.color = 'black';
-      this.tagResult.style.textShadow = 'none';
-      this.tagResult.style.backgroundSize = '0px 0px';
-    }
-    this.wordWidthSum = wordWidthSum;
-    this.tagResult.draggable = true;
-    this.tagResult.style.backgroundPosition = `${-this.wordWidthSum + this.width}px -${sentenceNumber * 40}px`;
-    this.onClickWord(
-      levelNumber,
-      roundNumber,
-      sentenceNumber,
-      sentence,
-      roundImage,
-    );
+    this.tagResult.style.color = 'black';
+    this.tagResult.style.textShadow = 'none';
+    this.tagResult.style.backgroundSize = '0px 0px';
   }
 
-  private onClickWord(
-    levelNumber: number,
-    roundNumber: number,
-    sentenceNumber: number,
-    sentence: string,
-    roundImage: string,
-  ): void {
-    this.tagResult.onclick = function (e: Event) {
-      const wordTag = <HTMLElement>e.target;
-      const resultSentence = <HTMLElement>(
-        document.querySelectorAll('.result-sentence')[sentenceNumber]
-      );
-      document.querySelector('.btn-complete')?.classList.remove('btn-disabled');
-      if (wordTag.classList.contains('clicked')) {
-        const newWordTag = document
-          .querySelector('.sentence')
-          ?.appendChild(wordTag);
-        newWordTag?.classList.remove('clicked');
-      } else {
-        const newWordTag = resultSentence.appendChild(wordTag);
-        newWordTag.classList.add('clicked');
-      }
-      document.querySelector('.btn-check')?.classList.add('btn-disabled');
-
-      showResult(
-        levelNumber,
-        roundNumber,
-        sentenceNumber,
-        resultSentence,
-        sentence,
-        roundImage,
-      );
-      checkResult(
-        levelNumber,
-        roundNumber,
-        sentenceNumber,
-        resultSentence,
-        sentence,
-      );
-    };
+  private onClick(): void {
+    const session = getGameSession();
+    const { sentence } = gameStore.getState().progress;
+    const resultSentence = document.querySelectorAll('.result-sentence')[
+      sentence
+    ] as HTMLElement;
+    if (this.tagResult.classList.contains('clicked')) {
+      document.querySelector('.sentence')?.appendChild(this.tagResult);
+      this.tagResult.classList.remove('clicked');
+    } else {
+      resultSentence.appendChild(this.tagResult);
+      this.tagResult.classList.add('clicked');
+    }
+    session.afterWordMove();
   }
+}
+
+export function createWords(
+  sentence: string,
+  level: number,
+  round: number,
+  sentenceIndex: number,
+): Word[] {
+  const imageSrc = `${pathToData}images/${getRound(level, round).levelData.imageSrc}`;
+  return layoutWords(sentence).map(
+    (layout) => new Word(layout, sentenceIndex, imageSrc),
+  );
 }

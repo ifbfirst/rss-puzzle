@@ -1,60 +1,47 @@
-import { checkResult } from './checkResult';
+import { getGameSession } from '../sessionRef';
 
-export function addDragDrop(
-  sentenceTag: HTMLElement,
-  levelNumber: number,
-  roundNumber: number,
-  sentenceNumber: number,
-  sentence: string,
-): void {
-  sentenceTag.addEventListener('dragstart', (e: Event) => {
-    const target = <HTMLElement>e.target;
+export function addDragDrop(container: HTMLElement): void {
+  container.addEventListener('dragstart', (event: DragEvent) => {
+    const target = event.target as HTMLElement | null;
     target?.classList.add('selected');
   });
 
-  sentenceTag.addEventListener('dragend', (e: Event) => {
-    const target = <HTMLElement>e.target;
+  container.addEventListener('dragend', (event: DragEvent) => {
+    const target = event.target as HTMLElement | null;
     target?.classList.remove('selected');
+    getGameSession().afterWordMove();
   });
 
-  sentenceTag.addEventListener('dragover', (e: MouseEvent) => {
-    e.preventDefault();
-    const activeElement = sentenceTag.querySelector('.selected');
-    const currentElement = <HTMLElement>e.target;
+  container.addEventListener('dragover', (event: DragEvent) => {
+    event.preventDefault();
+    const activeElement = container.querySelector('.selected');
+    const currentElement = event.target as HTMLElement | null;
     const isMoveable =
       activeElement !== currentElement &&
-      currentElement?.hasAttribute('draggable');
-    if (!isMoveable) {
+      Boolean(currentElement?.hasAttribute('draggable'));
+    if (!isMoveable || !currentElement || !activeElement) {
       return;
     }
-    const getNextElement = (
-      cursorPosition: number,
-      currentElement: HTMLElement,
-    ) => {
-      const currentElementCoord = currentElement.getBoundingClientRect();
-      const currentElementCenter =
-        currentElementCoord.y + currentElementCoord.height / 2;
-      const nextElement =
-        cursorPosition < currentElementCenter
-          ? currentElement
-          : currentElement.nextElementSibling;
-
-      return nextElement;
-    };
-    const nextElement = getNextElement(e.clientY, currentElement);
+    const nextElement = getNextElement(event.clientX, currentElement);
     if (
-      (nextElement && activeElement === nextElement.previousElementSibling) ||
-      activeElement === nextElement
+      activeElement === nextElement ||
+      (nextElement && activeElement === nextElement.previousElementSibling)
     ) {
       return;
     }
-    if (activeElement) sentenceTag.insertBefore(activeElement, nextElement);
-    checkResult(
-      levelNumber,
-      roundNumber,
-      sentenceNumber,
-      sentenceTag,
-      sentence,
-    );
+    container.insertBefore(activeElement, nextElement);
+    getGameSession().afterWordMove();
   });
+}
+
+function getNextElement(
+  cursorPosition: number,
+  currentElement: HTMLElement,
+): Element | null {
+  const box = currentElement.getBoundingClientRect();
+  const center = box.x + box.width / 2;
+  if (cursorPosition < center) {
+    return currentElement;
+  }
+  return currentElement.nextElementSibling;
 }

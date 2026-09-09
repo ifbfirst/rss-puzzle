@@ -47,13 +47,7 @@ export interface GameProgress {
   sentence: number;
 }
 
-export interface Player {
-  name: string;
-  surname: string;
-}
-
 export interface GameState {
-  player: Player | null;
   progress: GameProgress;
   hints: HintFlags;
   outcomes: SentenceOutcome[];

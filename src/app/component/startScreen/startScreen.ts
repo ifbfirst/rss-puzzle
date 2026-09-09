@@ -1,7 +1,6 @@
 import './startScreen.css';
 import { BaseComponent } from '../../interfaces/baseComponent';
 import { GamePage } from '../game/gamePage';
-import { gameStore } from '../../state/store';
 import { replaceMain } from '../../helpers/dom';
 
 export class StartScreenComponent extends BaseComponent {
@@ -9,12 +8,11 @@ export class StartScreenComponent extends BaseComponent {
 
   constructor(commonPage: BaseComponent | null) {
     super(commonPage);
-    const player = gameStore.getState().player;
     this.tagResult = this.createTag('div');
     this.tagResult.className = 'start-panel';
 
     const heading = this.createTag('h2');
-    heading.textContent = `Hello, ${player?.name ?? ''} ${player?.surname ?? ''}!`;
+    heading.textContent = 'Hello!';
     this.tagResult.appendChild(heading);
 
     const description = this.createTag('p');

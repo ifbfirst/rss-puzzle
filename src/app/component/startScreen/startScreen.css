@@ -25,4 +25,24 @@ h2 {
 
 .start-panel .btn {
   margin: 0 auto;
+  height: 44px;
+  min-width: 180px;
+  flex: none;
+}
+
+@media (max-width: 640px) {
+  .start-panel {
+    margin: 16px auto 24px;
+    padding: 20px 16px 24px;
+  }
+
+  .start-copy {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .start-panel .btn {
+    height: 48px;
+    width: min(240px, 100%);
+  }
 }

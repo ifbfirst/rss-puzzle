@@ -287,16 +287,37 @@ select:focus-visible {
 
 @media (max-width: 640px) {
   .wrapper {
-    margin: 8px auto 24px;
-    padding: 10px 10px 16px;
+    width: calc(100% - 8px);
+    margin: 4px auto 12px;
+    padding: 8px 4px 12px;
+    gap: 6px;
   }
 
   .settings-wrapper {
-    gap: 10px;
+    gap: 8px;
   }
 
-  .result-sentence div,
+  .puzzle-scaler {
+    width: 100%;
+  }
+
+  .sentence {
+    min-height: 32px;
+  }
+
   .sentence div {
-    font-size: 13px;
+    font-size: 11px;
+    padding: 2px 7px;
+    height: 28px;
+    margin: 2px;
+  }
+
+  .result-sentence div {
+    font-size: 12px;
+    padding: 3px;
+  }
+
+  .btn-wrapper {
+    gap: 8px;
   }
 }

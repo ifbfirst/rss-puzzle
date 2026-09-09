@@ -384,26 +384,27 @@ export class GameSession {
     const fit = (): void => {
       this.scaler.style.width = '';
       this.scaler.style.height = '';
+      const isMobile = window.innerWidth <= 640;
       const widthScale = Math.min(
         1,
         (this.scaler.clientWidth || PUZZLE_WIDTH) / PUZZLE_WIDTH,
       );
       const sentenceH = this.sentenceEl()?.offsetHeight ?? 52;
       const buttonsH = this.btn('.btn-wrapper')?.offsetHeight ?? 42;
-      const below = sentenceH + buttonsH + 28;
+      const below = sentenceH + buttonsH + (isMobile ? 16 : 28);
       const availableH =
         window.innerHeight - this.scaler.getBoundingClientRect().top - below;
       let scale = Math.min(
         1,
         widthScale,
-        Math.max(0.42, availableH / PUZZLE_HEIGHT),
+        Math.max(isMobile ? 0.58 : 0.42, availableH / PUZZLE_HEIGHT),
       );
       board.style.transform = `scale(${scale})`;
       this.scaler.style.width = `${PUZZLE_WIDTH * scale}px`;
       this.scaler.style.height = `${PUZZLE_HEIGHT * scale}px`;
       const overflow =
         document.documentElement.scrollHeight - window.innerHeight;
-      if (overflow > 0) {
+      if (overflow > 0 && !isMobile) {
         scale = Math.max(0.42, scale - (overflow + 8) / PUZZLE_HEIGHT);
         board.style.transform = `scale(${scale})`;
         this.scaler.style.width = `${PUZZLE_WIDTH * scale}px`;

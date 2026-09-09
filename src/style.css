@@ -78,5 +78,6 @@ body {
   .btn {
     min-width: 0;
     flex: 1;
+    height: 42px;
   }
 }

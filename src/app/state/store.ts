@@ -1,5 +1,5 @@
 import { SENTENCES_PER_ROUND } from '../constants';
-import { GameProgress, GameState, HintName, Player } from '../types/models';
+import { GameProgress, GameState, HintName } from '../types/models';
 import { storage } from './storage';
 
 function emptyOutcomes() {
@@ -9,7 +9,6 @@ function emptyOutcomes() {
 function createInitialState(): GameState {
   const savedProgress = storage.loadProgress();
   return {
-    player: storage.loadPlayer(),
     progress: {
       level: savedProgress.level,
       round: savedProgress.round,
@@ -42,23 +41,6 @@ class GameStore {
   private patch(partial: Partial<GameState>): void {
     this.state = { ...this.state, ...partial };
     this.emit();
-  }
-
-  login(player: Player): void {
-    storage.savePlayer(player);
-    this.patch({ player });
-  }
-
-  logout(): void {
-    storage.clearPlayer();
-    storage.clearProgress();
-    storage.clearHints();
-    this.state = createInitialState();
-    this.emit();
-  }
-
-  isLoggedIn(): boolean {
-    return this.state.player !== null;
   }
 
   setProgress(progress: GameProgress, persist = true): void {
